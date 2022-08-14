@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm"
+
+import Comment from "./Comment"
 
 @Entity("announcements")
 class Announcement {
@@ -37,6 +40,9 @@ class Announcement {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @OneToMany(() => Comment, (comment) => comment.announcement)
+  comments: Comment[]
 }
 
 export default Announcement
