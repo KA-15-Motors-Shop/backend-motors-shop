@@ -4,7 +4,11 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from "typeorm"
+
+import Announcement from "./Announcement"
+import User from "./User"
 
 @Entity("comments")
 class Comment {
@@ -19,6 +23,12 @@ class Comment {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @ManyToOne(() => Announcement, (announcement) => announcement.comments)
+  announcement: Announcement
+
+  @ManyToOne(() => User, (user) => user.comments)
+  user: User
 }
 
 export default Comment
