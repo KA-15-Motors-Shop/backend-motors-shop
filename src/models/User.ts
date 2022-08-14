@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
 } from "typeorm"
+
+import Comment from "./Comment"
 
 @Entity("users")
 class User {
@@ -32,14 +35,17 @@ class User {
   @Column()
   account_type: string
 
-  // @Column()
-  // password: string
+  @Column()
+  password: string
 
   @CreateDateColumn()
   created_at: Date
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[]
 }
 
 export default User
