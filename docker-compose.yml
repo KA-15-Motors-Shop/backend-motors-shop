@@ -5,7 +5,7 @@ services:
     container_name: motors_shop
     image: postgres:12
     ports:
-      - 45432:5432
+      - 5432:5432
     environment:
       - POSTGRES_USER=daniele
       - POSTGRES_PASSWORD=9543

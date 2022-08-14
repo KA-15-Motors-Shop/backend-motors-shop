@@ -4,7 +4,13 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToOne,
 } from "typeorm"
+
+import Comment from "./Comment"
+import User from "./User"
+import Image from "./Image"
 
 @Entity("announcements")
 class Announcement {
@@ -37,6 +43,15 @@ class Announcement {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @OneToMany(() => Comment, (comment) => comment.announcement)
+  comments: Comment[]
+
+  @ManyToOne(() => User, (user) => user.announcements)
+  user: User
+
+  @OneToMany(() => Image, (image) => image.announcement)
+  images: Image[]
 }
 
 export default Announcement

@@ -4,7 +4,14 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  OneToMany,
+  ManyToMany,
+  JoinTable,
 } from "typeorm"
+
+import Comment from "./Comment"
+import Announcement from "./Announcement"
+import Address from "./Address"
 
 @Entity("users")
 class User {
@@ -32,14 +39,24 @@ class User {
   @Column()
   account_type: string
 
-  // @Column()
-  // password: string
+  @Column()
+  password: string
 
   @CreateDateColumn()
   created_at: Date
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @OneToMany(() => Comment, (comment) => comment.user)
+  comments: Comment[]
+
+  @OneToMany(() => Announcement, (announcement) => announcement.user)
+  announcements: Announcement[]
+
+  @ManyToMany(() => Address)
+  @JoinTable()
+  addresses: Address[]
 }
 
 export default User
