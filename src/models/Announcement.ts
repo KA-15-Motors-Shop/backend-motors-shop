@@ -10,6 +10,7 @@ import {
 
 import Comment from "./Comment"
 import User from "./User"
+import Image from "./Image"
 
 @Entity("announcements")
 class Announcement {
@@ -48,6 +49,9 @@ class Announcement {
 
   @ManyToOne(() => User, (user) => user.announcements)
   user: User
+
+  @OneToMany(() => Image, (image) => image.announcement)
+  images: Image[]
 }
 
 export default Announcement

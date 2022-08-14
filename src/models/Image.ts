@@ -4,7 +4,10 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  ManyToOne,
 } from "typeorm"
+
+import Announcement from "./Announcement"
 
 @Entity("images")
 class Image {
@@ -19,6 +22,9 @@ class Image {
 
   @UpdateDateColumn()
   updated_at: Date
+
+  @ManyToOne(() => Announcement, (announcement) => announcement.images)
+  announcement: Announcement
 }
 
 export default Image
