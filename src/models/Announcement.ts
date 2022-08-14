@@ -5,9 +5,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToMany,
+  ManyToOne,
 } from "typeorm"
 
 import Comment from "./Comment"
+import User from "./User"
 
 @Entity("announcements")
 class Announcement {
@@ -43,6 +45,9 @@ class Announcement {
 
   @OneToMany(() => Comment, (comment) => comment.announcement)
   comments: Comment[]
+
+  @ManyToOne(() => User, (user) => user.announcements)
+  user: User
 }
 
 export default Announcement
