@@ -7,6 +7,6 @@ services:
     ports:
       - 5433:5433
     environment:
-      - POSTGRES_USER=dylan
-      - POSTGRES_PASSWORD=@HijEL5uzi}O
-      - POSTGRES_DB=motors_shop
+      - POSTGRES_USER=environment.POSTGRES_USER
+      - POSTGRES_PASSWORD=environment.POSTGRES_PASSWORD
+      - POSTGRES_DB=environment.POSTGRES_DB
