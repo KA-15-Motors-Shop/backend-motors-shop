@@ -1,0 +1,12 @@
+version: "3.9"
+
+services:
+  db:
+    container_name: motors_shop
+    image: postgres:12
+    ports:
+      - 5433:5433
+    environment:
+      - POSTGRES_USER=dylan
+      - POSTGRES_PASSWORD=@HijEL5uzi}O
+      - POSTGRES_DB=motors_shop
