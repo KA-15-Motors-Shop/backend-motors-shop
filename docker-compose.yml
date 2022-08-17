@@ -7,6 +7,6 @@ services:
     ports:
       - 5433:5433
     environment:
-      - POSTGRES_USER=environment.POSTGRES_USER
-      - POSTGRES_PASSWORD=environment.POSTGRES_PASSWORD
-      - POSTGRES_DB=environment.POSTGRES_DB
+      - POSTGRES_USER=process.env..POSTGRES_USER
+      - POSTGRES_PASSWORD=process.env.POSTGRES_PASSWORD
+      - POSTGRES_DB=process.env.POSTGRES_DB
