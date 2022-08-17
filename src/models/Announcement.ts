@@ -38,6 +38,9 @@ class Announcement {
   @Column()
   description: string
 
+  @Column()
+  is_active: boolean
+
   @CreateDateColumn()
   created_at: Date
 
