@@ -4,6 +4,7 @@ import { AppDataSource } from "../data-source"
 import Announcement from "../models/Announcement"
 
 import CreateAnnouncementService from "../services/announcements/announcementCreate.service"
+import DeleteAnnouncementService from "../services/announcements/announcementDelete.service"
 
 export default class AnnouncementController {
   static async store(request: Request, response: Response) {
@@ -38,5 +39,19 @@ export default class AnnouncementController {
     const announcements = await announcementRepository.find()
 
     return response.json(announcements)
+  }
+
+  static async delete(request: Request, response: Response) {
+    const { id } = request.params
+    const { is_active } = request.body
+
+    const deleteService = new DeleteAnnouncementService()
+
+    const announcement = await deleteService.execute({
+      is_active,
+      id: id,
+    })
+
+    return response.json(announcement)
   }
 }
