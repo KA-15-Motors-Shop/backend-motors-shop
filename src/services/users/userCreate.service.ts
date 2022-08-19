@@ -29,9 +29,7 @@ export default class CreateUserService {
     const hashedPassword = await bcrypt.hash(data.password, 10);
 
     const date = new Date();
-    const formatDate = date.toISOString().replace("T", "");
-    console.log("date:", date.toISOString().replace("T", " "));
-
+   
     const newUser = {
       id: uuidv4(),
       name: data.name,

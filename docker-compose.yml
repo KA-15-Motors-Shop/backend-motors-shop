@@ -5,8 +5,8 @@ services:
     container_name: motors_shop
     image: postgres:12
     ports:
-      - 5433:5433
+      - 5433:5432
     environment:
-      - POSTGRES_USER=process.env..POSTGRES_USER
+      - POSTGRES_USER=process.env.POSTGRES_USER
       - POSTGRES_PASSWORD=process.env.POSTGRES_PASSWORD
       - POSTGRES_DB=process.env.POSTGRES_DB
