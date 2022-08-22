@@ -1,14 +1,27 @@
-import { Router } from "express"
+import { Router } from 'express';
 
-import UserController from "../controllers/user.controller"
+import UserController from '../controllers/user.controller';
+import verifyTokenAuthenticationMiddleware from '../middlewares/authToken.middleware';
 
-const userRouter = Router()
+const userRouter = Router();
 
-userRouter.post("/", UserController.store)
-userRouter.post("/login", UserController.login)
-userRouter.get("/", UserController.show)
-userRouter.get("/:id", UserController.index)
-userRouter.patch("/:id", UserController.update)
-userRouter.delete("/:id", UserController.delete)
+userRouter.post('/', UserController.store);
+userRouter.post('/login', UserController.login);
+userRouter.get('/', verifyTokenAuthenticationMiddleware, UserController.show);
+userRouter.get(
+  '/:id',
+  verifyTokenAuthenticationMiddleware,
+  UserController.index
+);
+userRouter.patch(
+  '/:id',
+  verifyTokenAuthenticationMiddleware,
+  UserController.update
+);
+userRouter.delete(
+  '/:id',
+  verifyTokenAuthenticationMiddleware,
+  UserController.delete
+);
 
-export default userRouter
+export default userRouter;
