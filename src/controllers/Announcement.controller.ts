@@ -16,6 +16,7 @@ export default class AnnouncementController {
       price,
       vehicle_type,
       description,
+      is_active
     } = request.body
 
     const createAnnouncement = new CreateAnnouncementService()
@@ -28,6 +29,7 @@ export default class AnnouncementController {
       price,
       vehicle_type,
       description,
+      is_active
     })
 
     return response.status(201).json(announcement)

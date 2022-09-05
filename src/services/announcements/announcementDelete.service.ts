@@ -19,7 +19,7 @@ export default class DeleteAnnouncementService {
       throw new Error("Not found any announcement with this id")
     }
 
-    is_active ? (announcement.is_active = is_active) : announcement?.is_active
+    typeof is_active === "boolean"? (announcement.is_active = is_active) : announcement?.is_active
 
     return announcementRepository.save(announcement)
   }

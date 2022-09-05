@@ -9,6 +9,7 @@ interface AnnouncementDataParams {
   price: number
   vehicle_type: string
   description: string
+  is_active: boolean
 }
 
 export default class CreateAnnouncementService {

@@ -1,7 +1,15 @@
 import { DataSource } from "typeorm"
 import "dotenv/config"
 
-export const AppDataSource = new DataSource({
+export const AppDataSource = 
+  process.env.NODE_ENV === "test" ?
+  new DataSource({
+    type: "sqlite",
+    database: ":memory:",
+    entities: ["src/models/**/*.ts"],
+    synchronize: true
+  }) : 
+  new DataSource({
   type: "postgres",
   host: "localhost",
   port: 5432,
@@ -14,6 +22,7 @@ export const AppDataSource = new DataSource({
   migrations: ["src/migrations/*.ts"],
 })
 
+/*
 AppDataSource.initialize()
   .then(() => {
     console.log("Data Source has been initialized!")
@@ -21,3 +30,4 @@ AppDataSource.initialize()
   .catch((err) => {
     console.error("Error during Data Source initialization", err)
   })
+  */

@@ -17,7 +17,6 @@ interface UserDataParams {
 export default class CreateUserService {
   async execute(data: UserDataParams) {
     const userRepository = AppDataSource.getRepository(User);
-    console.log("password:", data.password);
     const users = await userRepository.find();
 
     const emailAlreadyExists = users.find((user) => user.email === data.email);
@@ -39,11 +38,10 @@ export default class CreateUserService {
       birth_date: data.birth_date,
       description: data.description,
       password: hashedPassword,
-      account_type: (data.account_type = "buyer"),
+      account_type: (data.account_type === "buyer" || data.account_type === "seller" || data.account_type === "admim") ? (data.account_type) : "buyer",
       created_at: date,
       updated_at: date,
     };
-    console.log(newUser);
 
     const user = userRepository.create(newUser);
 
