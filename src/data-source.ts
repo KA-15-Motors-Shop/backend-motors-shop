@@ -19,8 +19,8 @@ export const AppDataSource =
   synchronize: false,
   logging: true,
   ssl: process.env.NODE_ENV === "production" ? { rejectUnauthorized: false} : false,
-  entities: process.env.NODE_ENV === "production" ? ["dist/models/*.js"] : ["src/models/*.ts"],
-  migrations: process.env.NODE_ENV === "production" ? ["dist/migrations/*.js"] : ["src/migrations/*.ts"],
+  entities: process.env.NODE_ENV === "production" ? ["dist/src/models/*.js"] : ["src/models/*.ts"],
+  migrations: process.env.NODE_ENV === "production" ? ["dist/src/migrations/*.js"] : ["src/migrations/*.ts"],
 })
 
 /*
