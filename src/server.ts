@@ -1,7 +1,8 @@
 import { AppDataSource } from "./data-source";
 import app from "./app";
+import { env } from "process";
 
-const port = 3333;
+const port = process.env.PORT || 3333;
 
 (async () => {
   await AppDataSource.initialize().catch((err) => {
