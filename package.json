@@ -6,7 +6,7 @@
   "author": "almeidadylan <almeidadylan793@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "start": "node dist/server.js",
+    "start": "node dist/src/server.js",
     "dev": "ts-node-dev --inspect --ignore-watch node_modules src/server.ts",
     "typeorm": "typeorm-ts-node-commonjs",
     "build": "tsc",
