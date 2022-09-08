@@ -32,11 +32,6 @@ export default class UserController {
       account_type,
     });
 
-    if (user == "Email Already Exists") {
-      return response.status(409).json({
-        error: "Email Already Exists",
-      });
-    }
 
     return response.status(201).json(user);
   }
@@ -50,9 +45,6 @@ export default class UserController {
 
       const user = await userFindService.execute(id)
 
-      if ( user == "invalid id") {
-        return response.status(400).json({ error: "invalid uuid"})
-      }
       if (user === "error") {
         return response.status(400).json({ error: "user not found"})
       }
@@ -79,9 +71,6 @@ export default class UserController {
 
     const user = await userDeleteService.execute(id)
 
-    if ( user == "invalid id") {
-      return response.status(400).json({ error: "invalid uuid"})
-    }
     if (user == "error") {
       return response.status(400).json({ error: "user not found" });
     }
@@ -118,9 +107,6 @@ export default class UserController {
         account_type
     })
 
-    if ( user == "invalid id") {
-      return response.status(400).json({ error: "invalid uuid"})
-    }
     if ( user == "user not found" ) {
         return response.status(400).json({ error: "user not found" })
     }

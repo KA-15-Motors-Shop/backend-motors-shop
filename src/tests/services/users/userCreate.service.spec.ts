@@ -33,7 +33,6 @@ describe("Create an user", () => {
         const userData = { name, email, cpf, phone, password, birth_date, description, account_type };
 
         const newUser = await userCreateService.execute(userData);
-        console.log(newUser)
 
         expect(newUser).toHaveProperty("name", "Taldo Teste");
         expect(newUser).toHaveProperty("created_at");

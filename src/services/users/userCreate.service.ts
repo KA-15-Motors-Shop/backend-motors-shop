@@ -17,13 +17,6 @@ interface UserDataParams {
 export default class CreateUserService {
   async execute(data: UserDataParams) {
     const userRepository = AppDataSource.getRepository(User);
-    const users = await userRepository.find();
-
-    const emailAlreadyExists = users.find((user) => user.email === data.email);
-
-    if (emailAlreadyExists) {
-      return "Email Already Exists";
-    }
 
     const hashedPassword = await bcrypt.hash(data.password, 10);
 

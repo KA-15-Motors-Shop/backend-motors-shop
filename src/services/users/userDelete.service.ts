@@ -5,13 +5,9 @@ export default class UserDeleteService {
     async execute(id: string) {
         const userRepository = AppDataSource.getRepository(User);
 
-        if ( id.length < 36 || id.length > 36 ) {
-          return "invalid id"
-        }
-
-        const user = await userRepository.find({ where: { id: id } });
+        const user = await userRepository.findOneBy({ id: id });
     
-        if ( user.length < 1 ) {
+        if ( user === null ) {
           return "error"
         }
     

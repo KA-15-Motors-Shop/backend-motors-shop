@@ -2,19 +2,18 @@ import { AppDataSource } from "../../data-source";
 import User from "../../models/User";
 
 export default class UserFilterService {
-    async execute(id: string) {
-        if ( id.length < 36 || id.length > 36 ) {
-            return "invalid id"
-        }
+  async execute(id: string) {
+    const userRepository = AppDataSource.getRepository(User);
 
-        const userRepository = AppDataSource.getRepository(User)
+    const user = await userRepository.findOneBy({ id });
 
-        const user = await userRepository.find({ where: { id: id }})
-
-        if (user.length < 1) {
-            return "error"
-        }
-
-        return user
+    if (typeof user === "undefined") {
+      return "error";
     }
+    if ( user === null ) {
+        return "error"
+    }
+
+    return user;
+  }
 }
