@@ -1,4 +1,3 @@
-
 import { DataSource } from "typeorm";
 import { AppDataSource } from "../../../data-source";
 import CreateUserService from "../../../services/users/userCreate.service";

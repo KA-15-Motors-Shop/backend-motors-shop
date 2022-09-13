@@ -31,6 +31,6 @@ export default class UserLoginService {
       expiresIn: "24h",
     });
 
-    return token
+    return { id: account?.id, token: token }
     }
 }

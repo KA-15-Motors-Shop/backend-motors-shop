@@ -123,7 +123,7 @@ export default class UserController {
 
     const token = await userLoginService.execute({ email, password})
 
-    if ( token == "email") {
+    if ( token == "email is missing") {
       return response.status(409).json({ error: "email is missing" });
     }
     if ( token == "password" ) {
@@ -133,6 +133,6 @@ export default class UserController {
       return response.status(409).json({ error: "Wrong email/password" });
     }
 
-    return response.json({ token: token });
+    return response.json(token);
   }
 }

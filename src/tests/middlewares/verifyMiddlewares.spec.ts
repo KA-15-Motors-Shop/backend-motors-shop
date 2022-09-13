@@ -67,4 +67,43 @@ describe("Checks if an email already exists in the database", () => {
         expect(mockResponse.json).toHaveBeenCalledWith(expectedResponse);
         
     })
+
+
+    test("Should return an ok for uuid", async () => {
+        
+        const response = await request(app).get("/users")
+        const id = response.body[0].id
+  
+        const responseIdValido = await request(app).get(`/users/${id}`)
+
+        expect(response.statusCode).toBe(200);
+        expect(responseIdValido.statusCode).toBe(200);
+    });
+    
+
+    test("Should return an error user not found", async () => {
+        const expectedResponseUserNotFound = { error: "user not found" };
+
+        const idInexistente = '143ff16a-558a-44ca-bfaa-62a30a97ccfe';
+        const responseIdUserNotExist = await request(app).get(`/users/${idInexistente}`);
+        
+        expect(responseIdUserNotExist.statusCode).toBe(400);
+        expect(responseIdUserNotExist.body).toEqual(expectedResponseUserNotFound);
+    });
+    
+
+    test("Should return an error for invalid uuid", async () => {
+        const expectedResponse = { error: "invalid id" };
+        
+        const idMenor = '143ff16a-558a-44ca-bfaa-62a30a97cc';
+        const idMaior = '143ff16a-558a-44ca-bfaa-62a30a97ccfe8';
+
+        const responseIdInvalidoMenor = await request(app).get(`/users/${idMenor}`)
+        const responseIdInvalidoMaior = await request(app).get(`/users/${idMaior}`)
+
+        expect(responseIdInvalidoMenor.statusCode).toBe(422);
+        expect(responseIdInvalidoMenor.body).toEqual(expectedResponse);
+        expect(responseIdInvalidoMaior.statusCode).toBe(422);
+        expect(responseIdInvalidoMaior.body).toEqual(expectedResponse);
+    });
 })

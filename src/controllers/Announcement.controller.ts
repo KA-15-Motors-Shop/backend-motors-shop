@@ -1,10 +1,10 @@
-import { Request, Response } from "express"
+import { Request, Response } from "express";
 
-import { AppDataSource } from "../data-source"
-import Announcement from "../models/Announcement"
+import { AppDataSource } from "../data-source";
+import Announcement from "../models/Announcement";
 
-import CreateAnnouncementService from "../services/announcements/announcementCreate.service"
-import DeleteAnnouncementService from "../services/announcements/announcementDelete.service"
+import CreateAnnouncementService from "../services/announcements/announcementCreate.service";
+import DeleteAnnouncementService from "../services/announcements/announcementDelete.service";
 
 export default class AnnouncementController {
   static async store(request: Request, response: Response) {
@@ -16,10 +16,10 @@ export default class AnnouncementController {
       price,
       vehicle_type,
       description,
-      is_active
-    } = request.body
+      is_active,
+    } = request.body;
 
-    const createAnnouncement = new CreateAnnouncementService()
+    const createAnnouncement = new CreateAnnouncementService();
 
     const announcement = await createAnnouncement.execute({
       announcement_type,
@@ -29,31 +29,47 @@ export default class AnnouncementController {
       price,
       vehicle_type,
       description,
-      is_active
-    })
+      is_active,
+    });
 
-    return response.status(201).json(announcement)
+    return response.status(201).json(announcement);
   }
 
   static async index(request: Request, response: Response) {
-    const announcementRepository = AppDataSource.getRepository(Announcement)
+    const announcementRepository = AppDataSource.getRepository(Announcement);
 
-    const announcements = await announcementRepository.find()
+    const announcements = await announcementRepository.find();
 
-    return response.json(announcements)
+    return response.json(announcements);
   }
 
   static async delete(request: Request, response: Response) {
-    const { id } = request.params
-    const { is_active } = request.body
+    const { id } = request.params;
+    const {
+      announcement_type,
+      title,
+      year,
+      km,
+      price,
+      vehicle_type,
+      description,
+      is_active,
+    } = request.body;
 
-    const deleteService = new DeleteAnnouncementService()
+    const deleteService = new DeleteAnnouncementService();
 
     const announcement = await deleteService.execute({
-      is_active,
       id: id,
-    })
+      announcement_type,
+      title,
+      year,
+      km,
+      price,
+      vehicle_type,
+      description,
+      is_active
+    });
 
-    return response.json(announcement)
+    return response.json(announcement);
   }
 }
