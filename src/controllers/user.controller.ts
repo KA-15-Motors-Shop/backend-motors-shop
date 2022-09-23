@@ -8,6 +8,7 @@ import UserUpdateService from "../services/users/userUpdate.service";
 
 export default class UserController {
   static async store(request: Request, response: Response) {
+   // console.log(request.body)
     const {
       name,
       email,
@@ -18,6 +19,14 @@ export default class UserController {
       password,
       account_type,
     } = request.body;
+    const {
+      zipcode,
+      street,
+      detail,
+      state,
+      city,
+      additional,
+     } = request.body.addresses
 
     const createUser = new CreateUserService();
 
@@ -30,29 +39,30 @@ export default class UserController {
       description,
       password,
       account_type,
+      zipcode,
+      street,
+      detail,
+      state,
+      city,
+      additional,
     });
-
 
     return response.status(201).json(user);
   }
 
-
-
   static async index(request: Request, response: Response) {
-      const { id } = request.params;
+    const { id } = request.params;
 
-      const userFindService = new UserFilterService()
+    const userFindService = new UserFilterService();
 
-      const user = await userFindService.execute(id)
+    const user = await userFindService.execute(id);
 
-      if (user === "error") {
-        return response.status(400).json({ error: "user not found"})
-      }
+    if (user === "error") {
+      return response.status(400).json({ error: "user not found" });
+    }
 
-      return response.status(200).json(user)
+    return response.status(200).json(user);
   }
-
-
 
   static async show(request: Request, response: Response) {
     const userListService = new UserListService();
@@ -62,14 +72,12 @@ export default class UserController {
     return response.json(user);
   }
 
-
-
   static async delete(request: Request, response: Response) {
     const { id } = request.params;
 
-    const userDeleteService = new UserDeleteService()
+    const userDeleteService = new UserDeleteService();
 
-    const user = await userDeleteService.execute(id)
+    const user = await userDeleteService.execute(id);
 
     if (user == "error") {
       return response.status(400).json({ error: "user not found" });
@@ -77,8 +85,6 @@ export default class UserController {
 
     return response.status(204).json();
   }
-
-
 
   static async update(request: Request, response: Response) {
     const { id } = request.params;
@@ -93,43 +99,41 @@ export default class UserController {
       account_type,
     } = request.body;
 
-    const userUpdateService = new UserUpdateService()
-    
-    const user = await userUpdateService.execute({
-        id, 
-        name, 
-        email, 
-        password,
-        cpf,
-        phone,
-        birth_date,
-        description,
-        account_type
-    })
+    const userUpdateService = new UserUpdateService();
 
-    if ( user == "user not found" ) {
-        return response.status(400).json({ error: "user not found" })
+    const user = await userUpdateService.execute({
+      id,
+      name,
+      email,
+      password,
+      cpf,
+      phone,
+      birth_date,
+      description,
+      account_type,
+    });
+
+    if (user == "user not found") {
+      return response.status(400).json({ error: "user not found" });
     }
 
     return response.json(user);
   }
 
-
-
   static async login(request: Request, response: Response) {
     const { email, password } = request.body;
 
-    const userLoginService = new UserLoginService()
+    const userLoginService = new UserLoginService();
 
-    const token = await userLoginService.execute({ email, password})
+    const token = await userLoginService.execute({ email, password });
 
-    if ( token == "email is missing") {
+    if (token == "email is missing") {
       return response.status(409).json({ error: "email is missing" });
     }
-    if ( token == "password" ) {
+    if (token == "password") {
       return response.status(409).json({ error: "password is missing" });
     }
-    if ( token == "email or password" ) {
+    if (token == "email or password") {
       return response.status(409).json({ error: "Wrong email/password" });
     }
 

@@ -54,7 +54,7 @@ class User {
   @OneToMany(() => Announcement, (announcement) => announcement.user)
   announcements: Announcement[]
 
-  @ManyToMany(() => Address)
+  @ManyToMany(() => Address, (addresses) => addresses.id)
   @JoinTable()
   addresses: Address[]
 }

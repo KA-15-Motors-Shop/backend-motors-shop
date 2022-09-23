@@ -27,7 +27,7 @@ export default class UserLoginService {
       return "email or password"
     }
 
-    const token = jwt.sign({ email: data.email }, "SECRET_KEY", {
+    const token = jwt.sign({ email: data.email, id: account?.id }, "SECRET_KEY", {
       expiresIn: "24h",
     });
 
