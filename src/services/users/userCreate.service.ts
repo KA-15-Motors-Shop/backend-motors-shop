@@ -1,8 +1,8 @@
-import { AppDataSource } from "../../data-source";
-import User from "../../models/User";
-import { v4 as uuidv4 } from "uuid";
-import * as bcrypt from "bcrypt";
-import Address from "../../models/Address";
+import { AppDataSource } from '../../data-source';
+import { User } from '../../models/User';
+import { v4 as uuidv4 } from 'uuid';
+import * as bcrypt from 'bcrypt';
+import Address from '../../models/Address';
 
 interface UserDataParams {
   name: string;
@@ -33,24 +33,9 @@ interface AddressDataParams {
   updated_at: Date;
 }
 
-interface Teste {
-  id: string;
-  name: string;
-  email: string;
-  cpf: string;
-  phone: string;
-  birth_date: string;
-  description: string;
-  password: string;
-  account_type: string;
-  created_at: Date;
-  updated_at: Date;
-  addresses: AddressDataParams;
-}
-
 export default class CreateUserService {
   async execute(data: UserDataParams) {
-    console.log("data de user:", data);
+    console.log('data de user:', data);
     const userRepository = AppDataSource.getRepository(User);
     const addressRepository = AppDataSource.getRepository(Address);
 
@@ -73,30 +58,19 @@ export default class CreateUserService {
 
     await addressRepository.save(adress);
 
-    const newUser = {
-      id: uuidv4(),
-      name: data.name,
-      email: data.email,
-      cpf: data.cpf,
-      phone: data.phone,
-      birth_date: data.birth_date,
-      description: data.description,
-      password: hashedPassword,
-      account_type:
-        data.account_type === "buyer" ||
-        data.account_type === "seller" ||
-        data.account_type === "admim"
-          ? data.account_type
-          : "buyer",
-      created_at: date,
-      updated_at: date,
-      addresses: newAddress,
-    };
+    const newUser = new User();
+    id: uuidv4(), (newUser.name = data.name);
+    (newUser.email = data.email),
+      (newUser.cpf = data.cpf),
+      (newUser.phone = data.phone),
+      (newUser.birth_date = data.birth_date),
+      (newUser.description = data.description),
+      (newUser.password = hashedPassword),
+      (newUser.account_type = data.account_type);
+    (newUser.address = adress), userRepository.create(newUser);
 
-    const user = userRepository.create(newUser);
+    await userRepository.save(newUser);
 
-    await userRepository.save(user);
-
-    return user;
+    return newUser;
   }
 }

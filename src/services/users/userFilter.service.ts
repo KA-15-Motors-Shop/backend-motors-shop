@@ -1,5 +1,5 @@
-import { AppDataSource } from "../../data-source";
-import User from "../../models/User";
+import { AppDataSource } from '../../data-source';
+import { User } from '../../models/User';
 
 export default class UserFilterService {
   async execute(id: string) {
@@ -7,11 +7,11 @@ export default class UserFilterService {
 
     const user = await userRepository.findOneBy({ id });
 
-    if (typeof user === "undefined") {
-      return "error";
+    if (typeof user === 'undefined') {
+      return 'error';
     }
-    if ( user === null ) {
-        return "error"
+    if (user === null) {
+      return 'error';
     }
 
     return user;

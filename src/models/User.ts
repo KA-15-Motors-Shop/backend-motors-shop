@@ -6,57 +6,66 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToMany,
+  ManyToOne,
+  JoinColumn,
   JoinTable,
-} from "typeorm"
+  OneToOne,
+} from 'typeorm';
+import { Exclude } from 'class-transformer';
 
-import Comment from "./Comment"
-import Announcement from "./Announcement"
-import Address from "./Address"
+import Comment from './Comment';
+import Announcement from './Announcement';
+import Address from './Address';
 
-@Entity("users")
-class User {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
-
-  @Column()
-  name: string
-
-  @Column()
-  email: string
+@Entity('users')
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  cpf: string
+  name: string;
 
   @Column()
-  phone: string
+  email: string;
 
   @Column()
-  birth_date: Date
+  cpf: string;
 
   @Column()
-  description: string
+  phone: string;
 
   @Column()
-  account_type: string
+  birth_date: string;
 
   @Column()
-  password: string
+  description: string;
+
+  @Column()
+  account_type: string;
+
+  @Exclude()
+  @Column()
+  password: string;
 
   @CreateDateColumn()
-  created_at: Date
+  created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at: Date;
+
+  @OneToOne((type) => Address, {
+    eager: true,
+  })
+  @JoinColumn()
+  address: Address;
 
   @OneToMany(() => Comment, (comment) => comment.user)
-  comments: Comment[]
+  @JoinColumn()
+  comments: Comment[];
 
-  @OneToMany(() => Announcement, (announcement) => announcement.user)
-  announcements: Announcement[]
-
-  @ManyToMany(() => Address, (addresses) => addresses.id)
-  @JoinTable()
-  addresses: Address[]
+  @OneToMany(() => Announcement, (announcement) => announcement.user, {
+    eager: true,
+  })
+  @JoinColumn()
+  announcements: Announcement[];
 }
-
-export default User

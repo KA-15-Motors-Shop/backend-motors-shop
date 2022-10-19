@@ -1,12 +1,13 @@
-import { AppDataSource } from "../../data-source";
-import User from "../../models/User";
+import { AppDataSource } from '../../data-source';
+import { User } from '../../models/User';
+import { formatedUserResponse } from '../../utils/formatedUserResponse';
 
 export default class UserListService {
-    async execute() {
-        const userRepository = AppDataSource.getRepository(User)
+  async execute() {
+    const userRepository = AppDataSource.getRepository(User);
 
-        const users = await userRepository.find()
+    const listUsers = await userRepository.find();
 
-        return users
-    }
+    return listUsers.map((user) => formatedUserResponse({ user }));
+  }
 }

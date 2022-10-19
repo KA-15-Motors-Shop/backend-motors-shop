@@ -6,55 +6,85 @@ import {
   UpdateDateColumn,
   OneToMany,
   ManyToOne,
-} from "typeorm"
+  JoinColumn,
+} from 'typeorm';
+// import { VehicleType, AnnouncementType } from '../interfaces';
+import Comment from './Comment';
+import { User } from './User';
+// import Image from './Image';
 
-import Comment from "./Comment"
-import User from "./User"
-import Image from "./Image"
-
-@Entity("announcements")
+@Entity('announcements')
 class Announcement {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
+  @PrimaryGeneratedColumn('uuid')
+  readonly id: string;
+
+  // @Column({ type: 'text' })
+  // announcement_type: string;
 
   @Column()
-  announcement_type: string
+  type_of_ad: string;
+
+  // @Column({
+  //   type: 'enum',
+  //   enum: AnnouncementType,
+  //   default: AnnouncementType.VENDA,
+  // })
+  // announcement_type: AnnouncementType;
 
   @Column()
-  title: string
+  title: string;
 
   @Column()
-  year: string
+  year: string;
 
   @Column()
-  km: number
+  km: number;
 
   @Column()
-  price: number
+  price: number;
+
+  // @Column({
+  //   type: 'enum',
+  //   enum: VehicleType,
+  //   default: VehicleType.CAR,
+  // })
+  // vehicle_type: VehicleType;
 
   @Column()
-  vehicle_type: string
+  type_of_vehicle: string;
 
   @Column()
-  description: string
+  description: string;
 
   @Column()
-  is_active: boolean
+  is_published: boolean;
 
   @CreateDateColumn()
-  created_at: Date
+  created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at: Date;
 
   @OneToMany(() => Comment, (comment) => comment.announcement)
-  comments: Comment[]
+  @JoinColumn()
+  comments: Comment[];
 
-  @ManyToOne(() => User, (user) => user.announcements)
-  user: User
+  @ManyToOne(() => User, (user) => user.announcements, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE',
+  })
+  @JoinColumn()
+  user: User;
 
-  @OneToMany(() => Image, (image) => image.announcement)
-  images: Image[]
+  // @OneToMany(() => Image, (image) => image.announcement)
+  // images: Image[];
+
+  // constructor() {
+  //   if (!this.id) {
+  //     this.id = uuid();
+  //   }
+  // }
 }
 
-export default Announcement
+export default Announcement;

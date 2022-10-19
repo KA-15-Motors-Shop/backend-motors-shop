@@ -2,38 +2,51 @@ import {
   Entity,
   Column,
   PrimaryGeneratedColumn,
+  PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
-} from "typeorm"
+  JoinTable,
+  ManyToOne,
+  JoinColumn,
+  OneToMany,
+} from 'typeorm';
+import { v4 as uuid } from 'uuid';
+import { User } from '../models/User';
 
-@Entity("addresses")
+@Entity('addresses')
 class Address {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  zipcode: string
+  zipcode: string;
 
   @Column()
-  street: string
+  street: string;
+
+  @Column({ type: 'text', nullable: true })
+  number: string;
 
   @Column()
-  detail: string
+  state: string;
 
   @Column()
-  state: string
+  city: string;
 
   @Column()
-  city: string
-
-  @Column()
-  additional: string
+  additional: string;
 
   @CreateDateColumn()
-  created_at: Date
+  created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at: Date;
+
+  constructor() {
+    if (!this.id) {
+      this.id = uuid();
+    }
+  }
 }
 
-export default Address
+export default Address;

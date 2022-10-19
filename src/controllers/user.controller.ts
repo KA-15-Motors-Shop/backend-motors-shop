@@ -1,14 +1,13 @@
-import { Request, Response } from "express";
-import CreateUserService from "../services/users/userCreate.service";
-import UserListService from "../services/users/userList.service";
-import UserFilterService from "../services/users/userFilter.service";
-import UserDeleteService from "../services/users/userDelete.service";
-import UserLoginService from "../services/users/userLogin.service";
-import UserUpdateService from "../services/users/userUpdate.service";
+import { Request, Response } from 'express';
+import CreateUserService from '../services/users/userCreate.service';
+import UserListService from '../services/users/userList.service';
+import UserFilterService from '../services/users/userFilter.service';
+import UserDeleteService from '../services/users/userDelete.service';
+import UserUpdateService from '../services/users/userUpdate.service';
 
 export default class UserController {
   static async store(request: Request, response: Response) {
-   // console.log(request.body)
+    // console.log(request.body)
     const {
       name,
       email,
@@ -18,15 +17,13 @@ export default class UserController {
       description,
       password,
       account_type,
-    } = request.body;
-    const {
       zipcode,
       street,
       detail,
       state,
       city,
       additional,
-     } = request.body.addresses
+    } = request.body;
 
     const createUser = new CreateUserService();
 
@@ -57,8 +54,8 @@ export default class UserController {
 
     const user = await userFindService.execute(id);
 
-    if (user === "error") {
-      return response.status(400).json({ error: "user not found" });
+    if (user === 'error') {
+      return response.status(400).json({ error: 'user not found' });
     }
 
     return response.status(200).json(user);
@@ -79,8 +76,8 @@ export default class UserController {
 
     const user = await userDeleteService.execute(id);
 
-    if (user == "error") {
-      return response.status(400).json({ error: "user not found" });
+    if (user == 'error') {
+      return response.status(400).json({ error: 'user not found' });
     }
 
     return response.status(204).json();
@@ -113,30 +110,10 @@ export default class UserController {
       account_type,
     });
 
-    if (user == "user not found") {
-      return response.status(400).json({ error: "user not found" });
+    if (user == 'user not found') {
+      return response.status(400).json({ error: 'user not found' });
     }
 
     return response.json(user);
-  }
-
-  static async login(request: Request, response: Response) {
-    const { email, password } = request.body;
-
-    const userLoginService = new UserLoginService();
-
-    const token = await userLoginService.execute({ email, password });
-
-    if (token == "email is missing") {
-      return response.status(409).json({ error: "email is missing" });
-    }
-    if (token == "password") {
-      return response.status(409).json({ error: "password is missing" });
-    }
-    if (token == "email or password") {
-      return response.status(409).json({ error: "Wrong email/password" });
-    }
-
-    return response.json(token);
   }
 }

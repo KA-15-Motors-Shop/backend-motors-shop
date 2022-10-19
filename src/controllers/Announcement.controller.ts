@@ -1,75 +1,79 @@
-import { Request, Response } from "express";
+import { Request, Response } from 'express';
 
-import { AppDataSource } from "../data-source";
-import Announcement from "../models/Announcement";
-
-import CreateAnnouncementService from "../services/announcements/announcementCreate.service";
-import DeleteAnnouncementService from "../services/announcements/announcementDelete.service";
+import { AppDataSource } from '../data-source';
+import Announcement from '../models/Announcement';
+import { AppError, handleError } from '../errors/AppError';
+import { CreateAnnouncementService } from '../services/announcements/announcementCreate.service';
+import DeleteAnnouncementService from '../services/announcements/announcementDelete.service';
+import { listAnnouncementService } from '../services/announcements/announcementList.service';
+import announcementListOneService from '../services/announcements/announcementListOne.service';
+import deleteVehicleService from '../services/announcements/announcementDelete.service';
 
 export default class AnnouncementController {
-  static async store(request: Request, response: Response) {
-    const {
-      announcement_type,
-      title,
-      year,
-      km,
-      price,
-      vehicle_type,
-      description,
-      is_active,
-    } = request.body;
+  static async store(req: Request, res: Response) {
+    try {
+      const {
+        announcement_type,
+        title,
+        year,
+        comments,
+        km,
+        price,
+        vehicle_type,
+        description,
+        is_published,
+      } = req.body;
 
-    const createAnnouncement = new CreateAnnouncementService();
+      const { user_id } = req.params;
+      // console.log(req.params);
+      const newAnnouncement = await CreateAnnouncementService({
+        ...req.body,
+        user_id: user_id,
+      });
 
-    const announcement = await createAnnouncement.execute({
-      announcement_type,
-      title,
-      year,
-      km,
-      price,
-      vehicle_type,
-      description,
-      is_active,
-    });
-
-    return response.status(201).json(announcement);
+      return res
+        .status(201)
+        .json({ message: 'Anúncio criado', newAnnouncement });
+    } catch (err) {
+      if (err instanceof AppError) {
+        handleError(err, res);
+      }
+    }
   }
 
-  static async index(request: Request, response: Response) {
-    const announcementRepository = AppDataSource.getRepository(Announcement);
+  static async index(req: Request, res: Response) {
+    const vehicles = await listAnnouncementService();
 
-    const announcements = await announcementRepository.find();
-
-    return response.json(announcements);
+    return res.json(vehicles);
   }
 
-  static async delete(request: Request, response: Response) {
-    const { id } = request.params;
-    const {
-      announcement_type,
-      title,
-      year,
-      km,
-      price,
-      vehicle_type,
-      description,
-      is_active,
-    } = request.body;
+  // static async listByUser(req: Request, res: Response) {
+  //   try {
+  //     const { id } = req.params;
 
-    const deleteService = new DeleteAnnouncementService();
+  //     const announcement = await announcementListOneService(id);
 
-    const announcement = await deleteService.execute({
-      id: id,
-      announcement_type,
-      title,
-      year,
-      km,
-      price,
-      vehicle_type,
-      description,
-      is_active
-    });
+  //     return res.status(200).json({ announcement });
+  //   } catch (err) {
+  //     if (err instanceof AppError) {
+  //       handleError(err, res);
+  //     }
+  //   }
+  // }
 
-    return response.json(announcement);
+  static async listByUser(req: Request, res: Response) {
+    const { id } = req.params;
+
+    const announcement = await announcementListOneService(id);
+
+    return res.json(announcement);
+  }
+
+  static async delete(req: Request, res: Response) {
+    const { id } = req.params;
+
+    await deleteVehicleService(id);
+
+    return res.status(204).json();
   }
 }

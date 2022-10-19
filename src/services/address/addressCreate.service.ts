@@ -1,7 +1,7 @@
-import { AppDataSource } from "../../data-source";
-import Address from "../../models/Address";
-import { v4 as uuidv4 } from "uuid";
-import User from "../../models/User";
+import { AppDataSource } from '../../data-source';
+import Address from '../../models/Address';
+import { v4 as uuidv4 } from 'uuid';
+import User from '../../models/User';
 
 interface AddressDataParams {
   id: string;
@@ -16,7 +16,7 @@ interface AddressDataParams {
 export default class AddressCreateService {
   async execute(data: AddressDataParams) {
     const addressRepository = AppDataSource.getRepository(Address);
-    const userRepository = AppDataSource.getRepository(User)
+    const userRepository = AppDataSource.getRepository(User);
 
     const date = new Date();
 
@@ -30,12 +30,11 @@ export default class AddressCreateService {
       additional: data.additional,
       created_at: date,
       updated_at: date,
-      usersId: data.id
+      usersId: data.id,
     };
 
-    
-    const address = await addressRepository.create(newAddress);
-  
+    const address = addressRepository.create(newAddress);
+
     await addressRepository.save(address);
 
     return address;

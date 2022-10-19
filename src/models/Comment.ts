@@ -5,30 +5,31 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
-} from "typeorm"
+  JoinColumn,
+} from 'typeorm';
+import Announcement from './Announcement';
+import { User } from './User';
 
-import Announcement from "./Announcement"
-import User from "./User"
-
-@Entity("comments")
+@Entity('comments')
 class Comment {
-  @PrimaryGeneratedColumn("uuid")
-  id: string
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
   @Column()
-  text: string
+  text: string;
 
   @CreateDateColumn()
-  created_at: Date
+  created_at: Date;
 
   @UpdateDateColumn()
-  updated_at: Date
+  updated_at: Date;
 
   @ManyToOne(() => Announcement, (announcement) => announcement.comments)
-  announcement: Announcement
+  @JoinColumn()
+  announcement: Announcement;
 
   @ManyToOne(() => User, (user) => user.comments)
-  user: User
+  @JoinColumn()
+  user: User;
 }
-
-export default Comment
+export default Comment;
