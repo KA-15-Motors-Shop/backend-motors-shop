@@ -4,7 +4,8 @@ import UserListService from '../services/users/userList.service';
 import UserFilterService from '../services/users/userFilter.service';
 import UserDeleteService from '../services/users/userDelete.service';
 import UserUpdateService from '../services/users/userUpdate.service';
-
+import updateUserService from '../services/users/userUpdate.service';
+import { instanceToPlain } from 'class-transformer';
 export default class UserController {
   static async store(request: Request, response: Response) {
     // console.log(request.body)
@@ -23,6 +24,7 @@ export default class UserController {
       state,
       city,
       additional,
+      number,
     } = request.body;
 
     const createUser = new CreateUserService();
@@ -42,17 +44,18 @@ export default class UserController {
       state,
       city,
       additional,
+      number,
     });
 
     return response.status(201).json(user);
   }
 
   static async index(request: Request, response: Response) {
-    const { id } = request.params;
+    const { user_id } = request.params;
 
     const userFindService = new UserFilterService();
 
-    const user = await userFindService.execute(id);
+    const user = await userFindService.execute(user_id);
 
     if (user === 'error') {
       return response.status(400).json({ error: 'user not found' });
@@ -83,37 +86,20 @@ export default class UserController {
     return response.status(204).json();
   }
 
-  static async update(request: Request, response: Response) {
-    const { id } = request.params;
-    const {
+  static async update(req: Request, res: Response) {
+    const { user_id } = req.params;
+    const { name, email, cel, birth_date, description, password, street } =
+      req.body;
+
+    const userUpdated = await updateUserService(user_id, {
       name,
       email,
-      password,
-      cpf,
-      phone,
+      cel,
       birth_date,
       description,
-      account_type,
-    } = request.body;
-
-    const userUpdateService = new UserUpdateService();
-
-    const user = await userUpdateService.execute({
-      id,
-      name,
-      email,
       password,
-      cpf,
-      phone,
-      birth_date,
-      description,
-      account_type,
     });
 
-    if (user == 'user not found') {
-      return response.status(400).json({ error: 'user not found' });
-    }
-
-    return response.json(user);
+    return res.status(200).json(instanceToPlain(userUpdated));
   }
 }

@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { AppError } from '../errors/AppError';
+import AppError from '../errors/AppError';
 import { validationId } from '../utils/validationId';
 
 export const ValidationId = (
@@ -15,7 +15,7 @@ export const ValidationId = (
     throw new AppError('This user id is not valid', 422);
 
   if (announcement_id && !validationId(announcement_id))
-    throw new AppError('This vehicle id is not valid');
+    throw new AppError('This vehicle id is not valid', 401);
 
   return next();
 };

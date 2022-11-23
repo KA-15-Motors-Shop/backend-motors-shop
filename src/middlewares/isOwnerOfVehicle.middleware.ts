@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { AppDataSource } from '../data-source';
-import { AppError } from '../errors/AppError';
+import AppError from '../errors/AppError';
 import { User } from '../models/User';
 import Announcement from '../models/Announcement';
 
@@ -13,7 +13,7 @@ const IsOwner = async (req: Request, res: Response, next: NextFunction) => {
 
   const user = await userRepository.findOne({ where: { id: userId } });
 
-  if (!user) throw new AppError('User not found');
+  if (!user) throw new AppError('User not found', 401);
 
   const vehicle = await vehicleRepository.findOne({
     where: { id },

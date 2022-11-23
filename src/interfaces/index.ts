@@ -49,28 +49,24 @@ export interface UserSafeDelete {
   is_enabled: boolean;
 }
 
-export enum VehicleType {
-  CAR = 'Car',
-  MOTORCYCLE = 'Motorcycle',
-}
-
 export enum AnnouncementType {
   VENDA = 'Venda',
   LEILAO = 'Leilao',
 }
 
 export interface IVehicleCreate {
-  url_image: string;
-  type_of_ad: AnnouncementType;
-  comment: Icomments;
+  // url_image: string;
+  // type_of_ad: AnnouncementType;
+  // comment: Icomments;
   title: string;
   year: string;
   km: number;
   price: number;
   description: string;
-  type_of_vehicle: VehicleType;
+  type_of_vehicle: string;
+  type_of_ad: string;
   is_published: boolean;
-  user_id: string;
+  // user_id: string;
 }
 
 export interface Icomments {
@@ -80,20 +76,20 @@ export interface Icomments {
   owner: string;
 }
 
-export interface IVehicle {
-  id: string;
-  user_id: string;
-  name: string;
-  price: number;
-  description: string;
-  mileage: number;
-  year: number;
-  type: VehicleType;
-  url_image: string;
-  is_published: boolean;
-  created_at: Date;
-  updated_at: Date;
-}
+// export interface IVehicle {
+//   id: string;
+//   user_id: string;
+//   name: string;
+//   price: number;
+//   description: string;
+//   mileage: number;
+//   year: number;
+//   type: VehicleType;
+//   url_image: string;
+//   is_published: boolean;
+//   created_at: Date;
+//   updated_at: Date;
+// }
 
 export interface IVehicleUpdate {
   price: number;

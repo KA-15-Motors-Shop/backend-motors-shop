@@ -2,7 +2,7 @@ import { IVehicleCreate } from '../../interfaces/index';
 import Announcement from '../../models/Announcement';
 import { AppDataSource } from '../../data-source';
 import { User } from '../../models/User';
-import { AppError } from '../../errors/AppError';
+import AppError from '../../errors/AppError';
 import Comment from '../../models/Comment';
 
 // interface Icomments {
@@ -12,17 +12,19 @@ import Comment from '../../models/Comment';
 //   updated_at: Date;
 // }
 
-export const CreateAnnouncementService = async ({
-  type_of_ad,
-  title,
-  year,
-  km,
-  price,
-  description,
-  type_of_vehicle,
-  is_published = true,
-  user_id,
-}: IVehicleCreate) => {
+export const CreateAnnouncementService = async (
+  {
+    type_of_ad,
+    title,
+    year,
+    km,
+    price,
+    description,
+    type_of_vehicle,
+    is_published = true,
+  }: IVehicleCreate,
+  user_id: string
+) => {
   const announcementRepository = AppDataSource.getRepository(Announcement);
   const userRepository = AppDataSource.getRepository(User);
   const commentRepository = AppDataSource.getRepository(Comment);

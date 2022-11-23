@@ -1,47 +1,35 @@
+import { hash } from 'bcrypt';
 import { AppDataSource } from '../../data-source';
+import AppError from '../../errors/AppError';
+import { IUserUpdate } from '../../interfaces/users';
 import { User } from '../../models/User';
-import bcrypt from 'bcrypt';
 
-interface UpdateData {
-  id: string;
-  name: string;
-  email: string;
-  password: string;
-  cpf: string;
-  phone: string;
-  birth_date: string;
-  description: string;
-  account_type: string;
-}
+const updateUserService = async (id: string, data: IUserUpdate) => {
+  const userRepository = AppDataSource.getRepository(User);
 
-export default class UserUpdateService {
-  async execute(data: UpdateData) {
-    const userRepository = AppDataSource.getRepository(User);
+  const user = await userRepository.findOne({ where: { id } });
 
-    const user = await userRepository.findOneBy({ id: data.id });
+  // if (!user) throw new AppError('User not found.', 404);
 
-    const date = new Date();
+  const checkEmailExists = await userRepository.findOne({
+    where: { email: data.email },
+  });
 
-    if (user === null) {
-      return 'user not found';
-    }
+  // if (checkEmailExists && checkEmailExists.id != user.id)
+  //   throw new AppError('E-mail already in use.', 401);
 
-    data.name ? (user.name = data.name) : user?.name;
-    data.email ? (user.email = data.email) : user?.email;
-    data.password
-      ? (user.password = await bcrypt.hash(data.password, 10))
-      : user?.password;
-    data.cpf ? (user.cpf = data.cpf) : user?.cpf;
-    data.birth_date ? (user.birth_date = data.birth_date) : user?.birth_date;
-    data.phone ? (user.phone = data.phone) : user?.phone;
-    data.description
-      ? (user.description = data.description)
-      : user?.description;
-    data.account_type
-      ? (user.account_type = data.account_type)
-      : user?.account_type;
-    user.updated_at = date;
-
-    return userRepository.save(user);
+  if (data.password) {
+    data.password = await hash(data.password, 8);
   }
-}
+
+  const userUpdated = await userRepository.save({
+    ...data,
+    id,
+  });
+
+  const { password, ...updatedUserWithoutPassword } = userUpdated;
+
+  return updatedUserWithoutPassword;
+};
+
+export default updateUserService;

@@ -19,6 +19,7 @@ interface UserDataParams {
   state: string;
   city: string;
   additional: string;
+  number: string;
 }
 
 interface AddressDataParams {
@@ -28,6 +29,7 @@ interface AddressDataParams {
   detail: string;
   state: string;
   city: string;
+  number: string;
   additional: string;
   created_at: Date;
   updated_at: Date;
@@ -51,6 +53,7 @@ export default class CreateUserService {
       state: data.state,
       city: data.city,
       additional: data.additional,
+      number: data.number,
       created_at: date,
       updated_at: date,
     };

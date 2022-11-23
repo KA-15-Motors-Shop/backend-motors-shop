@@ -1,11 +1,12 @@
 import { AppDataSource } from '../../data-source';
 import { User } from '../../models/User';
+import { formatedUserResponse } from '../../utils/formatedUserResponse';
 
 export default class UserFilterService {
-  async execute(id: string) {
+  async execute(user_id: string) {
     const userRepository = AppDataSource.getRepository(User);
 
-    const user = await userRepository.findOneBy({ id });
+    const user = await userRepository.findOne({ where: { id: user_id } });
 
     if (typeof user === 'undefined') {
       return 'error';
@@ -14,6 +15,6 @@ export default class UserFilterService {
       return 'error';
     }
 
-    return user;
+    return formatedUserResponse({ user });
   }
 }

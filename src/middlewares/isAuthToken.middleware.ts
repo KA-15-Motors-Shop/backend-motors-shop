@@ -1,14 +1,20 @@
 import { NextFunction, Request, Response } from 'express';
 import { verify } from 'jsonwebtoken';
-import { AppError } from '../errors/AppError';
+import AppError, { handleError } from '../errors/AppError';
 
 const AuthToken = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers.authorization;
+  console.log(authHeader);
 
-  if (!authHeader) throw new AppError('Token is missing', 401);
+  if (!authHeader) {
+    const errorCatched = new AppError('Token is missing', 401);
+    return handleError(errorCatched, res);
+  }
 
   try {
     const [, token] = authHeader.split(' ');
+    // console.log(token);
+
     const secret = 'SECRET_KEY' as string;
     const decoded = verify(token, secret) as any;
 
@@ -20,7 +26,9 @@ const AuthToken = (req: Request, res: Response, next: NextFunction) => {
 
     return next();
   } catch (error) {
-    throw new AppError('Invalid token', 400);
+    console.log(error);
+    const errorCatched = new AppError('Invalid token', 400);
+    return handleError(errorCatched, res);
   }
 };
 

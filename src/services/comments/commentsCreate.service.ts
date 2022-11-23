@@ -2,7 +2,7 @@ import { Icomments, IVehicleCreate } from '../../interfaces/index';
 import Announcement from '../../models/Announcement';
 import { AppDataSource } from '../../data-source';
 import { User } from '../../models/User';
-import { AppError } from '../../errors/AppError';
+import AppError from '../../errors/AppError';
 import Comment from '../../models/Comment';
 import { formatedCommentResponse } from '../../utils/formatedCommentResponse';
 import { CreateComment } from '../../interfaces/comments/index';

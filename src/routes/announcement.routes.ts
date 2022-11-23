@@ -8,8 +8,8 @@ import { ValidationId } from '../middlewares/validationId.middleware';
 const announcementRouter = Router();
 
 announcementRouter.post(
-  '/:id',
-  CheckValidUuidMiddleware,
+  '',
+  // CheckValidUuidMiddleware,
   AuthToken,
   AnnouncementController.store
 );
@@ -20,7 +20,7 @@ announcementRouter.get(
   ValidationId,
   AnnouncementController.listByUser
 );
-// announcementRouter.patch('/:id', AnnouncementController.delete);
+announcementRouter.patch('/:id', AnnouncementController.update);
 announcementRouter.delete(
   '/:id',
   CheckValidUuidMiddleware,

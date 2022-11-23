@@ -1,15 +1,20 @@
-import { Request, Response, NextFunction } from "express";
-import { nextTick } from "process";
+import { Request, Response, NextFunction } from 'express';
+import { nextTick } from 'process';
 
-const CheckValidUuidMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+const CheckValidUuidMiddleware = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  const { user_id } = req.params;
+  console.log(req.params);
 
-   if ( id.length < 36 || id.length > 36 ) {
-        res.statusCode = 422
-        return res.json({ error: "invalid id" });
-    };
+  if (user_id.length < 36 || user_id.length > 36) {
+    res.statusCode = 422;
+    return res.json({ error: 'invalid id' });
+  }
 
-    next();
+  next();
 };
 
-export default CheckValidUuidMiddleware
+export default CheckValidUuidMiddleware;
