@@ -4,47 +4,57 @@ import UserListService from '../services/users/userList.service';
 import UserFilterService from '../services/users/userFilter.service';
 import UserDeleteService from '../services/users/userDelete.service';
 import UserUpdateService from '../services/users/userUpdate.service';
+import AppError, { HandleError } from '../errors/AppError';
 
 export default class UserController {
   static async store(request: Request, response: Response) {
-    // console.log(request.body)
-    const {
-      name,
-      email,
-      cpf,
-      phone,
-      birth_date,
-      description,
-      password,
-      account_type,
-      zipcode,
-      street,
-      detail,
-      state,
-      city,
-      additional,
-    } = request.body;
+    try {
 
-    const createUser = new CreateUserService();
-
-    const user = await createUser.execute({
-      name,
-      email,
-      cpf,
-      phone,
-      birth_date,
-      description,
-      password,
-      account_type,
-      zipcode,
-      street,
-      detail,
-      state,
-      city,
-      additional,
-    });
-
-    return response.status(201).json(user);
+      const {
+        name,
+        email,
+        cpf,
+        phone,
+        birth_date,
+        description,
+        password,
+        account_type,
+        zipcode,
+        street,
+        detail,
+        state,
+        city,
+        additional,
+        number
+      } = request.body;
+  
+      const createUser = new CreateUserService();
+  
+      const user = await createUser.execute({
+        name,
+        email,
+        cpf,
+        phone,
+        birth_date,
+        description,
+        password,
+        account_type,
+        zipcode,
+        street,
+        detail,
+        state,
+        city,
+        additional,
+        number
+      });
+  
+      return response.status(201).json(user);
+    }
+    catch (err) {
+      if (err instanceof AppError) {
+        HandleError.execute(err, response)
+      }
+    }
   }
 
   static async index(request: Request, response: Response) {
@@ -75,10 +85,6 @@ export default class UserController {
     const userDeleteService = new UserDeleteService();
 
     const user = await userDeleteService.execute(id);
-
-    if (user == 'error') {
-      return response.status(400).json({ error: 'user not found' });
-    }
 
     return response.status(204).json();
   }

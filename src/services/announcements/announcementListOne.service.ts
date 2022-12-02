@@ -1,5 +1,5 @@
 import { AppDataSource } from '../../data-source';
-import { AppError } from '../../errors/AppError';
+import AppError from '../../errors/AppError';
 import Comment from '../../models/Comment';
 import Announcement from '../../models/Announcement';
 import { formatedResponse } from '../../utils/formatedResponse';

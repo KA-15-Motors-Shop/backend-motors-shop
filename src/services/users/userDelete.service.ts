@@ -1,4 +1,5 @@
 import { AppDataSource } from '../../data-source';
+import AppError from '../../errors/AppError';
 import { User } from '../../models/User';
 
 export default class UserDeleteService {
@@ -8,7 +9,7 @@ export default class UserDeleteService {
     const user = await userRepository.findOneBy({ id: id });
 
     if (user === null) {
-      return 'error';
+      throw new AppError('user not found', 400)
     }
 
     const userDelete = await userRepository.delete({ id: id });

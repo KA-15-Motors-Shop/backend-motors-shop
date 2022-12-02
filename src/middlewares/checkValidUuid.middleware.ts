@@ -1,12 +1,15 @@
 import { Request, Response, NextFunction } from "express";
-import { nextTick } from "process";
+import AppError from "../errors/AppError";
 
 const CheckValidUuidMiddleware = (req: Request, res: Response, next: NextFunction) => {
-    const { id } = req.params;
+    const { user_id } = req.params;
 
-   if ( id.length < 36 || id.length > 36 ) {
-        res.statusCode = 422
-        return res.json({ error: "invalid id" });
+    if ( typeof user_id == 'undefined') {
+        throw new AppError("invalid id", 422)
+    }
+
+   if ( user_id.length < 36 || user_id.length > 36 ) {
+    throw new AppError("invalid id", 422)
     };
 
     next();

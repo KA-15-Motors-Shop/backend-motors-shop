@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 
 import { AppDataSource } from '../data-source';
 import Announcement from '../models/Announcement';
-import { AppError, handleError } from '../errors/AppError';
+import  AppError  from '../errors/AppError';
 import { CreateAnnouncementService } from '../services/announcements/announcementCreate.service';
 import DeleteAnnouncementService from '../services/announcements/announcementDelete.service';
 import { listAnnouncementService } from '../services/announcements/announcementList.service';
@@ -35,9 +35,10 @@ export default class AnnouncementController {
         .status(201)
         .json({ message: 'Anúncio criado', newAnnouncement });
     } catch (err) {
-      if (err instanceof AppError) {
-        handleError(err, res);
-      }
+     // if (err instanceof AppError) {
+     //   AppError('erro', 400);
+    //  }
+    return res.status(400)
     }
   }
 

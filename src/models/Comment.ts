@@ -24,11 +24,19 @@ class Comment {
   @UpdateDateColumn()
   updated_at: Date;
 
-  @ManyToOne(() => Announcement, (announcement) => announcement.comments)
+  @ManyToOne(() => Announcement, (announcement) => announcement.comments, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   @JoinColumn()
   announcement: Announcement;
 
-  @ManyToOne(() => User, (user) => user.comments)
+  @ManyToOne(() => User, (user) => user.comments, {
+    nullable: false,
+    onDelete: 'CASCADE',
+    onUpdate: 'CASCADE'
+  })
   @JoinColumn()
   user: User;
 }
